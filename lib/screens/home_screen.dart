@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 // Colors used across the Home Screen (dark theme)
 // ---------------------------------------------------------------------------
 const Color _bgColor = Color(0xFF0B1020); // dark navy background
-const Color _cardColor = Color(0xFF151B30); // card background
+const Color _cardColor = Color(0xFF151B30); // card backgrou
 const Color _borderColor = Color(0xFF262F50); // subtle card border
 const Color _purple = Color(0xFF8B5CF6);
 const Color _blue = Color(0xFF3B82F6);

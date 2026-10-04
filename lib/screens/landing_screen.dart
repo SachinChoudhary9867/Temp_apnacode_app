@@ -1,74 +1,141 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
-import 'screens/signup_screen.dart';
-import 'screens/splash_screen.dart';
+const Color _bgColor = Color(0xFF0B1020);
+const Color _purple = Color(0xFF8B5CF6);
+const Color _blue = Color(0xFF3B82F6);
+const Color _cyan = Color(0xFF22D3EE);
+const Color _textColor = Colors.white;
 
-// The ONLY main() function in the whole project.
-void main() {
-  runApp(const ApnaCodeApp());
-}
-
-class ApnaCodeApp extends StatelessWidget {
-  const ApnaCodeApp({super.key});
+class LandingScreen extends StatelessWidget {
+  const LandingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryBlue = Color(0xFF1565C0);
-
-    return MaterialApp(
-      title: 'ApnaCode',
-      debugShowCheckedModeBanner: false,
-
-      // One theme shared by all screens (blue + white).
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme:
-        ColorScheme.fromSeed(seedColor: primaryBlue).copyWith(primary: primaryBlue),
-        scaffoldBackgroundColor: Colors.white,
-
-        // Same style for every text field.
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.blue.shade50,
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: primaryBlue, width: 1.5),
-          ),
-        ),
-
-        // Same style for every main button.
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: primaryBlue,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(double.infinity, 52),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        backgroundColor: _bgColor,
+        body: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const _Brand(),
+                    const SizedBox(height: 48),
+                    const Text(
+                      'Learn. Practice. Grow.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w900,
+                        color: _textColor,
+                        height: 1.1,
+                      ),
+                    ),
+                    const SizedBox(height: 64),
+                    _GradientButton(
+                      label: 'Get Started',
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
-
-      // Named routes used by all screens.
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const SplashScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const HomeScreen(),
-      },
     );
   }
 }
+
+class _Brand extends StatelessWidget {
+  const _Brand();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DecoratedBox(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: [_purple, _cyan]),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: const SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(
+              Icons.terminal_rounded,
+              size: 24,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Text(
+          'ApnaCode',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: _textColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _GradientButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const _GradientButton({
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 56,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [_purple, _blue],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: _purple.withAlpha(50),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onPressed,
+          child: const Center(
+            child: Text(
+              'Get Started',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}             
